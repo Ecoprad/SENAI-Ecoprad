@@ -234,7 +234,7 @@ const TER = (() => {
   function palette() {
     const C = h => { const c = new T.Color(h); return [c.r, c.g, c.b]; };
     Object.assign(PAL, { a: C("#8f3d22"), b: C("#b2603a"), mud: C("#5a2e1e"), fan: C("#c4916a"),
-      layers: ["#b5582f", "#d08a52", "#e6c09a", "#f0dcc0", "#d99a74", "#c4683c", "#e8cfae"].map(C), water: C("#9a5c36"), waterHi: C("#b88458"), sys: C("#3f9fd6"), sysHi: C("#8fd2f2"), stone: C("#6b6f70"), stone2: C("#53585a"), berm: C("#a5512f"), gr: C("#5d7a2e"), gr2: C("#7f8f3a") });
+      layers: ["#b5582f", "#d08a52", "#e6c09a", "#f0dcc0", "#d99a74", "#c4683c", "#e8cfae"].map(C), water: C("#9a5c36"), waterHi: C("#b88458"), sys: C("#3f9fd6"), sysHi: C("#8fd2f2"), stone: C("#c9cac3"), stone2: C("#a8aaa3"), berm: C("#a5512f"), gr: C("#5d7a2e"), gr2: C("#7f8f3a") });
   }
   function grid(w, h, nx, nz, cx, cz) {
     const g = new T.PlaneGeometry(w, h, nx, nz); g.rotateX(-Math.PI / 2); g.translate(cx, 0, cz);
@@ -491,12 +491,12 @@ const TER = (() => {
 
   // ------------------------------------------------------------------ obras: paliçadas, manta, reservatório, trator e setas de fluxo
   let RES = null;
-  function juteTex() {
+  function juteTex() {   // manta geotêxtil (não tecido): cinza-claro com fibras finas
     const r = rng(29);
     return canvasTex(128, 128, (x, w, h) => {
-      x.fillStyle = "#b39462"; x.fillRect(0, 0, w, h);
-      for (let i = 0; i < w; i += 4) { x.fillStyle = `rgba(70,48,24,${0.25 + r() * 0.2})`; x.fillRect(i, 0, 1.5, h); x.fillRect(0, i, w, 1.5); }
-      for (let i = 0; i < 500; i++) { x.strokeStyle = r() < 0.5 ? "rgba(220,196,150,.35)" : "rgba(80,56,30,.3)"; x.lineWidth = 1; const a = r() * w, b = r() * h; x.beginPath(); x.moveTo(a, b); x.lineTo(a + (r() - 0.5) * 10, b + (r() - 0.5) * 10); x.stroke(); }
+      x.fillStyle = "#cfd0c9"; x.fillRect(0, 0, w, h);
+      for (let i = 0; i < 1400; i++) { x.fillStyle = r() < 0.5 ? `rgba(255,255,255,${0.25 + r() * 0.3})` : `rgba(120,122,116,${0.12 + r() * 0.18})`; x.fillRect(r() * w, r() * h, 1 + r() * 1.5, 1 + r() * 1.5); }
+      for (let i = 0; i < 260; i++) { x.strokeStyle = r() < 0.6 ? "rgba(250,250,246,.35)" : "rgba(130,132,126,.25)"; x.lineWidth = 0.8; const a = r() * w, b = r() * h, an = r() * Math.PI * 2, l = 3 + r() * 7; x.beginPath(); x.moveTo(a, b); x.quadraticCurveTo(a + Math.cos(an + 1) * l * 0.6, b + Math.sin(an + 1) * l * 0.6, a + Math.cos(an) * l, b + Math.sin(an) * l); x.stroke(); }
     });
   }
   function buildWorks(root) {
@@ -569,7 +569,7 @@ const TER = (() => {
       for (let i = 0; i < op.length / 3; i++) for (const pd of RES.pads) { const dx = op[3 * i] - pd.cx, dz = op[3 * i + 2] - pd.cz; if (dx * dx + dz * dz < 64) op[3 * i + 1] = Math.min(op[3 * i + 1], pd.bot - 0.6); }
       og.attributes.position.needsUpdate = true; og.computeVertexNormals(); }
     // rolos da manta geotêxtil (um por canal) que desenrolam na frente do revestimento
-    WD.rolls = new T.InstancedMesh(new T.CylinderGeometry(0.17, 0.17, 1, 14), new T.MeshStandardMaterial({ color: "#4d5356", roughness: 0.8 }), 12); WD.rolls.castShadow = true; WD.rolls.frustumCulled = false; root.add(WD.rolls);
+    WD.rolls = new T.InstancedMesh(new T.CylinderGeometry(0.17, 0.17, 1, 14), new T.MeshStandardMaterial({ color: "#d3d4ce", roughness: 0.95 }), 12); WD.rolls.castShadow = true; WD.rolls.frustumCulled = false; root.add(WD.rolls);
     WD.dozer = dozer(root); WD.arr = arrows(root, 700); WD.rib = null;
   }
   function dozer(root) {
